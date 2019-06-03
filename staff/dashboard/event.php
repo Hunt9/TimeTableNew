@@ -77,6 +77,16 @@ if($_SESSION['teacher_id']=="" && $_SESSION['name']=="")
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
+        <a class="nav-link" href="meeting.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Meeting</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
         <a class="nav-link" href="profile.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Profile</span></a>
@@ -182,7 +192,7 @@ $result = mysqli_query($con,$query);
     ?>
           <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800"><?php echo $row['uname']; }?></h1>
-          <h1 class="h3 mb-2 text-gray-800">Events</h1>
+       <!--    <h1 class="h3 mb-2 text-gray-800">Events</h1> -->
           <p class="mb-4">Below are the Events. 
 
           <!-- DataTales Example -->

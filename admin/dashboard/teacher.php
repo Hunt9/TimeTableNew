@@ -112,7 +112,20 @@ if($_SESSION['admin']=="")
           <i class="fas fa-fw fa-table"></i>
           <span>Event</span></a>
       </li>
-	  	    <li class="nav-item">
+	  	  
+       <hr class="sidebar-divider d-none d-md-block">
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="meeting.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Meetings</span></a>
+      </li>
+
+
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+      <li class="nav-item">
         <a class="nav-link" href="Uni.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Institute Name</span></a>
@@ -218,7 +231,7 @@ $result = mysqli_query($con,$query);
     ?>
           <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800"><?php echo $row['uname']; }?></h1>
-          <h1 class="h3 mb-2 text-gray-800">Time Tables</h1>
+        <!--   <h1 class="h3 mb-2 text-gray-800">Time Tables</h1> -->
           <p class="mb-4">Below are the Teacher. Click <a href="#" data-toggle="modal" data-target="#insertModal">
                   Here
                 </a> to Add New, to Update Click
@@ -300,6 +313,119 @@ mysqli_close($con);
 }
 
     getData();
+
+
+ 
+mysqli_close($con);
+
+ 
+?>    
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+
+       <div class="container-fluid">
+
+  
+        <!--   <h1 class="h3 mb-2 text-gray-800">Time Tables</h1> -->
+          <p class="mb-4">Below Is The List Of Subtitute Teachers.
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Subtitute Teachers</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Subtitutes</th>
+                    
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                       <th>Subtitutes</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+           <?php
+          $con=mysqli_connect('localhost','root','','timetable');
+
+function getData1as()
+{
+    
+$con=mysqli_connect('localhost','root','','timetable');
+
+
+$query = "SELECT teacher.teacher_id,teacher.department_id,teacher.name from teacher"; 
+
+$result = mysqli_query($con,$query);
+
+ // start a table tag in the HTML
+
+while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
+
+ $tid = $row["teacher_id"];
+ $tname = $row["name"];
+ $tdid = $row["department_id"];
+ $subtitutes = "";
+
+
+
+  $querysub = "SELECT teacher.name as sub from teacher WHERE teacher.department_id = $tdid and teacher.teacher_id != $tid"; 
+
+  $result1 = mysqli_query($con,$querysub);
+
+
+
+
+while($row = mysqli_fetch_array($result1)){ 
+
+
+$subtitutes = $subtitutes." [" .$row["sub"]."] ";
+
+
+}
+
+
+
+echo "<tr>
+    <td>". $tid. "</td>
+   <td>". $tname. " </td>
+   <td>". $subtitutes. " </td>
+    
+
+
+
+
+   
+   
+    </tr>";
+}
+
+ //Close the table in HTML
+
+
+mysqli_close($con);
+}
+
+    getData1as();
 
 
  

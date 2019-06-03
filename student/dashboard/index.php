@@ -164,7 +164,7 @@ if($_SESSION['stu_id']=="" && $_SESSION['name']=="")
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid"  id="print">
 
           <!-- Page Heading -->
 		   <?php
@@ -179,7 +179,7 @@ $result = mysqli_query($con,$query);
     ?>
           <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800"><?php echo $row['uname']; }?></h1>
-          <h1 class="h3 mb-2 text-gray-800">Time Tables</h1>
+         <!--  <h1 class="h3 mb-2 text-gray-800">Time Tables</h1> -->
           <p class="mb-4">Below are the Schedules for Subjects, Teachers, Events and Rooms.
 
           <!-- DataTales Example -->
@@ -188,7 +188,7 @@ $result = mysqli_query($con,$query);
               <h6 class="m-0 font-weight-bold text-primary">Time Table</h6>
             </div>
             <div class="card-body">
-              <div class="table-responsive" id="print">
+              <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>

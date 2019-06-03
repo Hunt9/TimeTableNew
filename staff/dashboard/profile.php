@@ -72,6 +72,15 @@ if($_SESSION['teacher_id']=="" && $_SESSION['name']=="")
           <span>Event</span></a>
       </li>
 
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="meeting.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Meeting</span></a>
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -182,7 +191,7 @@ $result = mysqli_query($con,$query);
     ?>
           <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800"><?php echo $row['uname']; }?></h1>
-          <h1 class="h3 mb-2 text-gray-800">Profile</h1>
+         <!--  <h1 class="h3 mb-2 text-gray-800">Profile</h1> -->
           <p class="mb-4">Below is the Teacher Profile. 
 
           <!-- DataTales Example -->
@@ -209,12 +218,14 @@ $result = mysqli_query($con,$query);
          <?php
 		 $connection=mysqli_connect('localhost','root','','timetable');
 
+     $id = $_SESSION['teacher_id'];
+
 $query = "Select teacher.name,teacher.eid,
 teacher.mob,teacher.address,
 department.department_name
 from teacher
 inner join department on teacher.department_id=department.department_id
-where teacher.teacher_id=27"; 
+where teacher.teacher_id=$id"; 
 
 $result = mysqli_query($connection,$query);
 

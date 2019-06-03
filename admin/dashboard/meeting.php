@@ -2,7 +2,7 @@
 session_start();
 include('config.php');
 
-if($_SESSION['stu_id']=="" && $_SESSION['name']=="")
+if($_SESSION['admin']=="")
 {
   echo "<script type = 'text/javascript'>window.location.href = '../index.php'; </script> ";
 }
@@ -45,7 +45,7 @@ if($_SESSION['stu_id']=="" && $_SESSION['name']=="")
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Student Dashboard</div>
+        <div class="sidebar-brand-text mx-3">Admin Panel</div>
       </a>
 
       <!-- Divider -->
@@ -63,24 +63,74 @@ if($_SESSION['stu_id']=="" && $_SESSION['name']=="")
       <hr class="sidebar-divider d-none d-md-block">
 
 
-     
       <!-- Nav Item - Tables -->
-      <li class="nav-item active">
-        <a class="nav-link" href="event.php">
+      <li class="nav-item">
+        <a class="nav-link" href="department.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Event</span></a>
+          <span>Department</span></a>
       </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
+
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="profile.php">
+        <a class="nav-link" href="subject.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Profile</span></a>
+          <span>Subject</span></a>
       </li>
 
+
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="teacher.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Teacher</span></a>
+      </li>
+
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="br.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Building & Rooms</span></a>
+      </li>
+
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="event.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Event</span></a>
+      </li>
+
+
+      <hr class="sidebar-divider d-none d-md-block">
+      <!-- Nav Item - Tables -->
+      <li class="nav-item active">
+        <a class="nav-link" href="meeting.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Meetings</span></a>
+      </li>
+
+
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+	    <li class="nav-item">
+        <a class="nav-link" href="Uni.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Institute Name</span></a>
+      </li>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -147,7 +197,7 @@ if($_SESSION['stu_id']=="" && $_SESSION['name']=="")
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['name'];?></span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
                 <img class="img-profile rounded-circle" src="img/admin.jpg">
               </a>
               <!-- Dropdown - User Information -->
@@ -168,8 +218,7 @@ if($_SESSION['stu_id']=="" && $_SESSION['name']=="")
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
-		   <?php
+          <!-- Page Heading -->   <?php
    $con=mysqli_connect('localhost','root','','timetable');
 
 
@@ -181,13 +230,19 @@ $result = mysqli_query($con,$query);
     ?>
           <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800"><?php echo $row['uname']; }?></h1>
+		  
          <!--  <h1 class="h3 mb-2 text-gray-800">Events</h1> -->
-          <p class="mb-4">Below are the Events. 
+          <p class="mb-4">Below are the Meetings. Click <a href="#" data-toggle="modal" data-target="#insertModal">
+                  Here
+                </a> to Add New, to update Click 
+                <a href="#" data-toggle="modal" data-target="#updateEvent">
+                  Here
+                </a>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Events</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Meetings</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -229,16 +284,19 @@ function getData()
     
 $connection=mysqli_connect('localhost','root','','timetable');
 
-$query = "SELECT id,name,description,date,start_time,end_time FROM event"; 
+$query = "SELECT id,name,description,date,start_time,end_time FROM meeting"; 
 
 $result = mysqli_query($connection,$query);
 
  // start a table tag in the HTML
 
+// <a name='clear'  id= 'clear'  value = $event_id
+//     data-target='#insertModal'>Update</a>
+
 while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
 
-//$rpid = $row["rp_id"];
-//$pid = $row["p_id"];
+
+   $event_id = $row["id"];
 
     echo "<tr>
     <td>". $row["id"]. "</td>
@@ -247,8 +305,18 @@ while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through re
     <td>" . $row["date"] . "</td>
     <td>" . $row["start_time"] . "</td>
     <td>" . $row["end_time"] . "</td>
-   
+
+
+
     </tr>";
+
+    // <td>"."  <a href='#' data-toggle='modal' data-target='#updateEvent'>
+    //               Update
+    //             </a>
+
+    //             "."</td>
+   
+    // </tr>";
  //$row['index'] the index here is a field name
 }
 
@@ -311,35 +379,35 @@ mysqli_close($connection);
    
                 <h1 class="h4 text-gray-900 mb-4"> </h1>
               </div>
-              <form class="user">
+              <form class="user" method="POST" action="insert.php">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="Event Name">
+                    <input type="text" class="form-control form-control-user" id="ename" name="ename" placeholder="Event Name">
                   </div>
               
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-user" id="exampleInputEmail" placeholder="Event Description">
+                  <input type="text" class="form-control form-control-user" id="ediscrip" name = "ediscrip" placeholder="Event Description">
                 </div>
 
                 <div class="form-group">
-                 Date: <input type="date" name="eventDate" class="form-control form-control-user" id="exampleInputEmail">
+                 Date: <input type="date" class="form-control form-control-user" id="edate" name = "edate">
                 </div>
 
                  <form class="user">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    Start Time: <input type="time" name="startTime" class="form-control form-control-user" id="exampleInputEmail">
+                    Start Time: <input type="time"  class="form-control form-control-user" id="estime" name="estime">
                   </div>
 
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                    End Time: <input type="time" name="endTime" class="form-control form-control-user" id="exampleInputEmail">
+                    End Time: <input type="time" class="form-control form-control-user" id="eetime" name="eetime">
                   </div>
               
                 </div>
 
       
-              </form>
+              
           
             </div>
        
@@ -347,13 +415,85 @@ mysqli_close($connection);
 
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-          <a class="btn btn-primary" href="login.html">Insert</a>
+          <button class="btn btn-primary" type="submit" name="insertmeeting" id = "insertmeeting">Insert</button>
         </div>
       </div>
     </div>
   </div>
     </div>
 
+</form>
+
+
+
+ <!-- Insertion Modal-->
+  <div class="modal fade" id="updateEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Event</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        
+        <div class="container">
+
+    <div class="container">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+   
+                <h1 class="h4 text-gray-900 mb-4"> </h1>
+              </div>
+              <form class="user" method="POST" action="update.php">
+                <div class="form-group row">
+
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" id="evid" name="evid" placeholder="Event id">
+                  </div>
+
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" id="uename" name="uename" placeholder="Event Name">
+                  </div>
+              
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-user" id="uediscrip" name = "uediscrip" placeholder="Event Description">
+                </div>
+
+                <div class="form-group">
+                 Date: <input type="date" class="form-control form-control-user" id="uedate" name = "uedate">
+                </div>
+
+                 <form class="user">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    Start Time: <input type="time"  class="form-control form-control-user" id="uestime" name="uestime">
+                  </div>
+
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    End Time: <input type="time" class="form-control form-control-user" id="ueetime" name="ueetime">
+                  </div>
+              
+                </div>
+
+      
+              
+          
+            </div>
+       
+
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" type="submit" name="updatemeeting" id = "updatemeeting">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+
+</form>
 
 
 

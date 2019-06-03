@@ -1,5 +1,6 @@
 <?php
     $conn=mysqli_connect('localhost','root','','timetable');
+            require("phpmailer/class.phpmailer.php");
 
     // echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 
@@ -114,6 +115,10 @@ if(isset($_POST['insertevent'])) {
     $sql = "INSERT INTO event (name,description,date,start_time,end_time)
         VALUES ('".$name."','".$discrip."','".$date."','".$starttime."','".$endtime."')";
    if (mysqli_query($conn, $sql)) {
+
+    notifystaff('event');
+    notifystudent();
+
      echo "<script type = 'text/javascript'>window.location.href = 'event.php'; </script> ";
 } else {
      echo "<script type='text/javascript'>alert('Insertion Failed! (Server Error)')</script>";
@@ -124,6 +129,26 @@ if(isset($_POST['insertevent'])) {
 
 
 
+
+if(isset($_POST['insertmeeting'])) {
+    $name=$_POST["ename"];
+    $discrip=$_POST["ediscrip"];
+    $date=$_POST["edate"];
+    $starttime=$_POST["estime"];
+    $endtime=$_POST["eetime"];
+    $sql = "INSERT INTO meeting (name,description,date,start_time,end_time)
+        VALUES ('".$name."','".$discrip."','".$date."','".$starttime."','".$endtime."')";
+   if (mysqli_query($conn, $sql)) {
+
+    notifystaff('meeting');
+
+     echo "<script type = 'text/javascript'>window.location.href = 'meeting.php'; </script> ";
+} else {
+     echo "<script type='text/javascript'>alert('Insertion Failed! (Server Error)')</script>";
+     echo "<script type = 'text/javascript'>window.location.href = 'meeting.php'; </script> ";
+}
+
+}
 
 
 
@@ -151,17 +176,17 @@ if((checkTeacher($tmid,$day,$rid,$tid) == 'Available') && (checkRoom($tmid,$day,
 
         notifusers($sub,$tid);
 
-     echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
+    // echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
 } else {
      echo "<script type='text/javascript'>alert('Insertion Failed! (Server Error)')</script>";
-     echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
+    // echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
 }
 
 }else{
 
 
  echo "<script type='text/javascript'>alert('Time Slot Already Assigned')</script>";
-      echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";    
+      //echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";    
 
 }
 
@@ -240,8 +265,6 @@ function notifusers($sub,$tid){
         $conn=mysqli_connect('localhost','root','','timetable');
 
 
-        require("phpmailer/class.phpmailer.php");
-    
 
     $sql = "SELECT eid FROM teacher WHERE teacher_id = $tid";
     $result = mysqli_query($conn, $sql);
@@ -252,8 +275,9 @@ if (mysqli_num_rows($result) > 0) {
         $email_id = $row["eid"];
 
         $mailer = new PHPMailer();
+        $mailer->SetLanguage("en", '/phpMailer/language/');
         $mailer->IsSMTP();
-        $mailer->Host = 'ssl://smtp.gmail.com';
+        $mailer->Host = 'smtp.gmail.com';
         $mailer->Port = 465; //can be 587
         $mailer->SMTPAuth = TRUE;
         $mailer->Username = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
@@ -263,16 +287,16 @@ if (mysqli_num_rows($result) > 0) {
         $mailer->Body = 'Your Time Table Has Been Updated! Kindly Login To Check Details.';
         $mailer->Subject = 'Update';
         $mailer->AddAddress($email_id);  // This is where you want your email to be sent
-        $mailer->Send();
-        // if(!$mailer->Send())
-        // {
-        //    echo "Message was not sent<br/ >";
-        //    echo "Mailer Error: " . $mailer->ErrorInfo;
-        // }
-        // else
-        // {
-        //    echo "Message has been sent";
-        // }
+        //$mailer->Send();
+        if(!$mailer->Send())
+        {
+           echo "Message was not sent<br/ >";
+           echo "Mailer Error: " . $mailer->ErrorInfo;
+        }
+        else
+        {
+           echo "Message has been sent";
+        }
 
 
     }
@@ -282,15 +306,15 @@ if (mysqli_num_rows($result) > 0) {
 
 
 
-    $sql = "select st.eid from subject as s 
+    $sql1 = "select st.eid from subject as s 
             inner join semester as sem on sem.sem_id = s.sem_id
             inner join student as st on st.sem_id = s.sem_id
             where s.sem_id =(select sem_id from subject where subject_id = $sub) group by st.eid";
 
-    $result = mysqli_query($conn, $sql);
+    $result1 = mysqli_query($conn, $sql1);
 
-if (mysqli_num_rows($result) > 0) {
-    while($row = mysqli_fetch_assoc($result)) {
+if (mysqli_num_rows($result1) > 0) {
+    while($row = mysqli_fetch_assoc($result1)) {
  
         $email_id = $row["eid"];
 
@@ -332,6 +356,104 @@ mysqli_close($conn);
 
 
 
+function notifystaff($type){
+        $conn=mysqli_connect('localhost','root','','timetable');
+
+
+
+
+        $bodyText = "";
+        $subjectText = "";
+
+        if($type == 'event')
+        {
+
+        $bodyText = "A New Event Has Been Scheduled! . Kindly Login To Check Details";
+        $subjectText = "New Event!";
+
+        }else
+        {
+
+        $bodyText = "A New Meeting Has Been Scheduled! . Kindly Login To Check Details";
+        $subjectText = "New Meeting!";
+
+        }
+    
+
+    $sql = "SELECT eid FROM teacher";
+    $result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+ 
+        $email_id = $row["eid"];
+
+        $mailer = new PHPMailer();
+        $mailer->IsSMTP();
+        $mailer->Host = 'ssl://smtp.gmail.com';
+        $mailer->Port = 465; //can be 587
+        $mailer->SMTPAuth = TRUE;
+        $mailer->Username = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->Password = 'cIrclesLTD786';// Change this to your gmail password
+        $mailer->From = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->FromName = 'Time Table'; // This will reflect as from name in the email to be sent
+        $mailer->Body = $bodyText;
+        $mailer->Subject = $subjectText;
+        $mailer->AddAddress($email_id);  // This is where you want your email to be sent
+        $mailer->Send();
+   
+
+    }
+}
+
+
+
+mysqli_close($conn);
+
+}
+
+function notifystudent(){
+        $conn=mysqli_connect('localhost','root','','timetable');
+
+        $subjectText = "";
+        $bodyText = "";
+
+
+    $sql = "SELECT eid FROM student";
+    $result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+ 
+        $email_id = $row["eid"];
+
+        $mailer = new PHPMailer();
+        $mailer->IsSMTP();
+        $mailer->Host = 'ssl://smtp.gmail.com';
+        $mailer->Port = 465; //can be 587
+        $mailer->SMTPAuth = TRUE;
+        $mailer->Username = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->Password = 'cIrclesLTD786';// Change this to your gmail password
+        $mailer->From = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->FromName = 'Time Table'; // This will reflect as from name in the email to be sent
+        $mailer->Body = 'A New Event Has Been Scheduled! . Kindly Login To Check Details.';
+        $mailer->Subject = 'New Event!';
+        $mailer->AddAddress($email_id);  // This is where you want your email to be sent
+        $mailer->Send();
+   
+
+    }
+}
+
+
+mysqli_close($conn);
+}
+
+
+
+
+
+
 
         mysqli_close($conn);
 
@@ -351,6 +473,10 @@ if(isset($_POST['insertUni'])) {
 }
 
 }
+
+
+
+
 
 
   ?>

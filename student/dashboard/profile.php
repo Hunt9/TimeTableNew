@@ -181,7 +181,7 @@ $result = mysqli_query($con,$query);
     ?>
           <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800"><?php echo $row['uname']; }?></h1>
-          <h1 class="h3 mb-2 text-gray-800">Profile</h1>
+         <!--  <h1 class="h3 mb-2 text-gray-800">Profile</h1> -->
           <p class="mb-4">Below is the Student Profile. 
 
           <!-- DataTales Example -->

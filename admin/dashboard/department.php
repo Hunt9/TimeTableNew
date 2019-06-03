@@ -112,7 +112,20 @@ if($_SESSION['admin']=="")
           <i class="fas fa-fw fa-table"></i>
           <span>Event</span></a>
       </li>
-	  	    <li class="nav-item">
+	  	
+       <hr class="sidebar-divider d-none d-md-block">
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="meeting.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Meetings</span></a>
+      </li>
+
+
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+      <li class="nav-item">
         <a class="nav-link" href="Uni.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Institute Name</span></a>
@@ -217,7 +230,7 @@ $result = mysqli_query($con,$query);
     ?>
           <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800"><?php echo $row['uname']; }?></h1>
-          <h1 class="h3 mb-2 text-gray-800">Time Tables</h1>
+         <!--  <h1 class="h3 mb-2 text-gray-800">Time Tables</h1> -->
           <p class="mb-4">Below are the Department. Click <a href="#" data-toggle="modal" data-target="#insertModal">
                   Here
                 </a> to Add New,to Update Click 

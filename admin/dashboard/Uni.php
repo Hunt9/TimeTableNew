@@ -64,7 +64,7 @@ if($_SESSION['admin']=="")
 
 
       <!-- Nav Item - Tables -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="department.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Department</span></a>
@@ -112,7 +112,20 @@ if($_SESSION['admin']=="")
           <i class="fas fa-fw fa-table"></i>
           <span>Event</span></a>
       </li>
-    <li class="nav-item">
+  
+       <hr class="sidebar-divider d-none d-md-block">
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="meeting.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Meetings</span></a>
+      </li>
+
+
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+      <li class="nav-item active">
         <a class="nav-link" href="Uni.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Institute Name</span></a>
@@ -241,7 +254,7 @@ function getData()
 $con=mysqli_connect('localhost','root','','timetable');
 
 
-$query = "SELECT uid,uname FROM university"; 
+$query = "SELECT uid,uname FROM university order by uid DESC limit 1"; 
 
 $result = mysqli_query($con,$query);
 

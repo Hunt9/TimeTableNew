@@ -201,7 +201,7 @@ if($_SESSION['admin']=="")
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Rooms</h1>
+         <!--  <h1 class="h3 mb-2 text-gray-800">Rooms</h1> -->
           <p class="mb-4">Below are the Rooms ,Click <a href="#" data-toggle="modal" data-target="#insertModal">
                   Here
                 </a> to Add New
@@ -366,7 +366,7 @@ $result = mysqli_query($con,$query);
    <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Buildings</h1>
+         <!--  <h1 class="h3 mb-2 text-gray-800">Buildings</h1> -->
           <p class="mb-4">Below are the Building ,Click <a href="#" data-toggle="modal" data-target="#insertBuildings"></a>
                   Here
                 </a> to Add New

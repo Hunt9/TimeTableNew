@@ -16,10 +16,36 @@
     $sql = "UPDATE event set  name = '$name', description = '$discrip',date = '$date',start_time = '$starttime',end_time = '$endtime'  WHERE id = $id" ;
 
    if (mysqli_query($conn, $sql)) {
+    notifystudent();
+    notifystaff('event');
      echo "<script type = 'text/javascript'>window.location.href = 'event.php'; </script> ";
 } else {
      echo "<script type='text/javascript'>alert('Updation Failed! (Server Error)')</script>";
      echo "<script type = 'text/javascript'>window.location.href = 'event.php'; </script> ";
+}
+
+}
+
+//====================== Update Meeting ==============================
+
+    if(isset($_POST['updatemeeting'])) {
+    $id = $_POST["evid"];
+    $name=$_POST["uename"];
+    $discrip=$_POST["uediscrip"];
+    $date=$_POST["uedate"];
+    $starttime=$_POST["uestime"];
+    $endtime=$_POST["ueetime"];
+
+    $sql = "UPDATE meeting set  name = '$name', description = '$discrip',date = '$date',start_time = '$starttime',end_time = '$endtime'  WHERE id = $id" ;
+
+   if (mysqli_query($conn, $sql)) {
+
+    notifystaff('meeting');
+
+     echo "<script type = 'text/javascript'>window.location.href = 'meeting.php'; </script> ";
+} else {
+     echo "<script type='text/javascript'>alert('Updation Failed! (Server Error)')</script>";
+     echo "<script type = 'text/javascript'>window.location.href = 'meeting.php'; </script> ";
 }
 
 }
@@ -266,6 +292,103 @@ if(isset($_POST['updateUni'])) {
      //echo "<script type = 'text/javascript'>window.location.href = 'Uni.php'; </script> ";
 }
 
+}
+
+
+
+
+ function notifystaff($type){
+        $conn=mysqli_connect('localhost','root','','timetable');
+
+
+        require("phpmailer/class.phpmailer.php");
+
+        $bodyText = "";
+        $subjectText = "";
+
+        if($type == 'event')
+        {
+
+        $bodyText = "An Event Has Been ReScheduled! . Kindly Login To Check Details";
+        $subjectText = "Event Updated!";
+
+        }else
+        {
+
+        $bodyText = "A Meeting Has Been ReScheduled! . Kindly Login To Check Details";
+        $subjectText = "Meeting Updated!";
+
+        }
+    
+
+    $sql = "SELECT eid FROM teacher";
+    $result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+ 
+        $email_id = $row["eid"];
+
+        $mailer = new PHPMailer();
+        $mailer->IsSMTP();
+        $mailer->Host = 'ssl://smtp.gmail.com';
+        $mailer->Port = 465; //can be 587
+        $mailer->SMTPAuth = TRUE;
+        $mailer->Username = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->Password = 'cIrclesLTD786';// Change this to your gmail password
+        $mailer->From = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->FromName = 'Time Table'; // This will reflect as from name in the email to be sent
+        $mailer->Body = $bodyText;
+        $mailer->Subject = $subjectText;
+        $mailer->AddAddress($email_id);  // This is where you want your email to be sent
+        $mailer->Send();
+   
+
+    }
+}
+
+
+
+mysqli_close($conn);
+
+}
+
+function notifystudent(){
+        $conn=mysqli_connect('localhost','root','','timetable');
+
+        require("phpmailer/class.phpmailer.php");
+
+
+    $sql = "SELECT eid FROM student";
+    $result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+ 
+        $email_id = $row["eid"];
+
+        $mailer = new PHPMailer();
+        $mailer->IsSMTP();
+        $mailer->Host = 'ssl://smtp.gmail.com';
+        $mailer->Port = 465; //can be 587
+        $mailer->SMTPAuth = TRUE;
+        $mailer->Username = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->Password = 'cIrclesLTD786';// Change this to your gmail password
+        $mailer->From = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
+        $mailer->FromName = 'Time Table'; // This will reflect as from name in the email to be sent
+        $mailer->Body = 'An Event Has Been ReScheduled! . Kindly Login To Check Details';
+        $mailer->Subject = 'Updated Event!';
+        $mailer->AddAddress($email_id);  // This is where you want your email to be sent
+        $mailer->Send();
+   
+
+    
+
+    }
+}
+
+
+mysqli_close($conn);
 }
 
 
