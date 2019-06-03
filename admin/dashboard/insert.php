@@ -176,17 +176,17 @@ if((checkTeacher($tmid,$day,$rid,$tid) == 'Available') && (checkRoom($tmid,$day,
 
         notifusers($sub,$tid);
 
-    // echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
+     echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
 } else {
      echo "<script type='text/javascript'>alert('Insertion Failed! (Server Error)')</script>";
-    // echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
+     echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";
 }
 
 }else{
 
 
  echo "<script type='text/javascript'>alert('Time Slot Already Assigned')</script>";
-      //echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";    
+      echo "<script type = 'text/javascript'>window.location.href = 'index.php'; </script> ";    
 
 }
 
@@ -266,6 +266,8 @@ function notifusers($sub,$tid){
 
 
 
+    
+
     $sql = "SELECT eid FROM teacher WHERE teacher_id = $tid";
     $result = mysqli_query($conn, $sql);
 
@@ -275,9 +277,8 @@ if (mysqli_num_rows($result) > 0) {
         $email_id = $row["eid"];
 
         $mailer = new PHPMailer();
-        $mailer->SetLanguage("en", '/phpMailer/language/');
         $mailer->IsSMTP();
-        $mailer->Host = 'smtp.gmail.com';
+        $mailer->Host = 'ssl://smtp.gmail.com';
         $mailer->Port = 465; //can be 587
         $mailer->SMTPAuth = TRUE;
         $mailer->Username = 'mailfromtimetable@gmail.com';  // Change this to your gmail address
@@ -287,16 +288,16 @@ if (mysqli_num_rows($result) > 0) {
         $mailer->Body = 'Your Time Table Has Been Updated! Kindly Login To Check Details.';
         $mailer->Subject = 'Update';
         $mailer->AddAddress($email_id);  // This is where you want your email to be sent
-        //$mailer->Send();
-        if(!$mailer->Send())
-        {
-           echo "Message was not sent<br/ >";
-           echo "Mailer Error: " . $mailer->ErrorInfo;
-        }
-        else
-        {
-           echo "Message has been sent";
-        }
+        $mailer->Send();
+        // if(!$mailer->Send())
+        // {
+        //    echo "Message was not sent<br/ >";
+        //    echo "Mailer Error: " . $mailer->ErrorInfo;
+        // }
+        // else
+        // {
+        //    echo "Message has been sent";
+        // }
 
 
     }
