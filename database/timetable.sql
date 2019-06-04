@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2019 at 02:12 PM
--- Server version: 10.1.39-MariaDB
--- PHP Version: 7.3.5
+-- Generation Time: Jun 04, 2019 at 03:04 PM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -82,7 +82,7 @@ CREATE TABLE `contactus` (
 INSERT INTO `contactus` (`id`, `name`, `email`, `subject`, `message`) VALUES
 (6, 'jhjkhjkj', 'manu@gmail.com', 'jhkkkj', 'gfghghhjj'),
 (7, 'Rehan', 'rehan@gmail.com', 'hlo', 'hey'),
-(8, '', '', '1', '');
+(8, '', '', '3', '');
 
 -- --------------------------------------------------------
 
@@ -129,7 +129,32 @@ CREATE TABLE `event` (
 
 INSERT INTO `event` (`id`, `name`, `description`, `date`, `start_time`, `end_time`) VALUES
 (1, 'Parents Meeting', 'Parents Teacher Meeting', '', '', ''),
-(2, 'Parents Teacher Meeting', 'Parents Teacher Meeting', '2019-05-31', '14:01', '17:01');
+(2, 'CX', 'asdasdasdasd', '2019-06-15', '13:00', '23:00'),
+(3, 'asd', 'asdasdasdasd', '2019-06-14', '', ''),
+(4, 'asd', 'asdasdasdasd', '2019-06-14', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `meeting`
+--
+
+CREATE TABLE `meeting` (
+  `id` int(9) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(500) NOT NULL,
+  `date` varchar(100) NOT NULL,
+  `start_time` varchar(100) NOT NULL,
+  `end_time` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `meeting`
+--
+
+INSERT INTO `meeting` (`id`, `name`, `description`, `date`, `start_time`, `end_time`) VALUES
+(1, 'Parents Meeting', 'Parents Meeting', '2019-06-22', '14:00', '17:00'),
+(2, 'asdaaa', 'asdasdasdasd', '2019-06-12', '', '');
 
 -- --------------------------------------------------------
 
@@ -151,8 +176,7 @@ CREATE TABLE `room` (
 INSERT INTO `room` (`id`, `name`, `seats`, `building_id`) VALUES
 (1, 'room1', 30, 2),
 (2, 'room1', 25, 1),
-(3, 'room3', 20, 2),
-(4, 'HS-01', 40, 1);
+(3, 'room3', 20, 2);
 
 -- --------------------------------------------------------
 
@@ -218,7 +242,7 @@ INSERT INTO `student` (`stu_id`, `name`, `eid`, `password`, `mob`, `address`, `d
 (10, 'Myra', 'myra@gmail.com', 'myra', 9874123654, 'Punjab', 15, 10, '1995-11-23', 'DSC_0061.JPG', 'f', 'OFF', '2016-05-22'),
 (11, 'Dazy', 'dazy@gmail.com', 'dazy', 7894563214, 'Banglore', 16, 11, '1994-02-14', 'IMG_20160117_140446.jpg', 'f', 'OFF', '2016-05-22'),
 (12, 'Aman', 'aman@gmail.com', 'aman', 7894563258, 'Mansa', 16, 12, '1993-05-23', 'IMG_20160214_104030-1.jpg', 'f', 'ON', '2016-05-22'),
-(13, 'Sumair', 'sumair.ahmed@talkontext.com', '123', 3312345678, 'address', 13, 1, '1995-03-03', 'abc', 'm', 'ON', '2019-05-29');
+(13, 'Zahid', 'champthe20@gmail.com', '123', 337845216, 'Address ', 13, 3, '1994-06-29', 'abc', 'm', 'ON', '2019-06-03');
 
 -- --------------------------------------------------------
 
@@ -254,7 +278,7 @@ INSERT INTO `subject` (`subject_id`, `subject_name`, `sem_id`, `department_id`) 
 (14, 'Discrete', 1, 13),
 (18, 'testingSub', 2, 16),
 (19, 'testingSubject', 2, 15),
-(20, 'OOP', 1, 13);
+(20, 'Statistics', 3, 13);
 
 -- --------------------------------------------------------
 
@@ -277,11 +301,11 @@ CREATE TABLE `teacher` (
 --
 
 INSERT INTO `teacher` (`teacher_id`, `name`, `eid`, `password`, `mob`, `address`, `department_id`) VALUES
-(27, 'ali', 'ali@gmail.com', '0312222222', 1234, 'street123', 13),
-(28, 'asad', 'asad@gmail.com', '0312222221', 456, 'street12', 14),
-(29, 'saba', 'saba@gmail.com', '0333212222', 789, 'street789', 14),
-(30, 'sana', 'sana@gmail.com', '0312222213', 1234, 'street12', 14),
-(31, 'Ahkam', 'ahkam.ahmed@talkontext.com', '123', 3350320313, 'address', 13);
+(31, 'asad', 'admin', 'admin', 0, 'street12', 13),
+(33, 'asad', 'admin1223', 'admin', 0, 'street123', 14),
+(34, 'sana', 'admin1', 'admin', 0, 'street123', 13),
+(35, 'Ali', 'ali@gmail.com', '123', 3345781254, 'address', 13),
+(36, 'Muhammad Ahkam', 'muhammadahkamahmad@gmail.com', '123', 3350320313, 'address', 13);
 
 -- --------------------------------------------------------
 
@@ -296,22 +320,29 @@ CREATE TABLE `timeschedule` (
   `date` varchar(40) DEFAULT NULL,
   `day` int(1) NOT NULL,
   `room_id` int(9) NOT NULL,
-  `teacher_id` int(11) NOT NULL
+  `teacher_id` int(11) NOT NULL,
+  `sub_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `timeschedule`
 --
 
-INSERT INTO `timeschedule` (`timeschedule_id`, `subject_id`, `time_id`, `date`, `day`, `room_id`, `teacher_id`) VALUES
-(17, 1, 1, '2019-05-01', 1, 2, 27),
-(18, 2, 2, '2019-05-02', 2, 1, 28),
-(19, 2, 3, '2019-05-02', 1, 1, 28),
-(20, 3, 8, '2019-05-02', 1, 3, 29),
-(23, 2, 1, '2019-08-08', 7, 2, 27),
-(24, 14, 1, '2019-08-08', 3, 2, 27),
-(25, 18, 2, '2019-08-08', 3, 1, 30),
-(26, 20, 5, '2019-08-08', 3, 4, 31);
+INSERT INTO `timeschedule` (`timeschedule_id`, `subject_id`, `time_id`, `date`, `day`, `room_id`, `teacher_id`, `sub_id`) VALUES
+(43, 1, 1, '2019-08-08', 1, 2, 31, 34),
+(44, 20, 4, '2019-08-08', 3, 3, 36, NULL),
+(45, 12, 4, '2019-08-08', 5, 2, 34, NULL),
+(46, 20, 2, '2019-08-08', 4, 2, 36, NULL),
+(47, 4, 6, '2019-08-08', 6, 2, 36, NULL),
+(48, 5, 3, '2019-08-08', 5, 3, 36, NULL),
+(49, 1, 5, '2019-08-08', 4, 2, 36, NULL),
+(50, 14, 9, '2019-08-08', 4, 2, 36, NULL),
+(51, 8, 9, '2019-08-08', 2, 1, 36, NULL),
+(52, 2, 4, '2019-08-08', 1, 3, 36, NULL),
+(53, 12, 10, '2019-08-08', 7, 3, 36, NULL),
+(54, 20, 5, '2019-08-08', 7, 2, 36, NULL),
+(55, 1, 9, '2019-08-08', 5, 1, 36, NULL),
+(56, 1, 1, '2019-08-08', 4, 1, 36, NULL);
 
 -- --------------------------------------------------------
 
@@ -358,9 +389,7 @@ CREATE TABLE `university` (
 
 INSERT INTO `university` (`uid`, `uname`) VALUES
 (1, 'testing institute'),
-(2, 'testing institue name'),
-(3, 'Sir Syed University Of Engineering & Technology '),
-(4, 'MAJU');
+(2, 'Sir Syed University Of Eng. & Technology');
 
 --
 -- Indexes for dumped tables
@@ -398,6 +427,12 @@ ALTER TABLE `department` ADD FULLTEXT KEY `course_name` (`department_name`);
 -- Indexes for table `event`
 --
 ALTER TABLE `event`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `meeting`
+--
+ALTER TABLE `meeting`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -445,7 +480,8 @@ ALTER TABLE `timeschedule`
   ADD KEY `teacher_id` (`teacher_id`),
   ADD KEY `subject_id` (`subject_id`),
   ADD KEY `time_id` (`time_id`),
-  ADD KEY `room_id` (`room_id`);
+  ADD KEY `room_id` (`room_id`),
+  ADD KEY `FK_subID` (`sub_id`);
 
 --
 -- Indexes for table `timeslot`
@@ -491,13 +527,19 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `meeting`
+--
+ALTER TABLE `meeting`
   MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `semester`
@@ -521,19 +563,19 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT for table `teacher`
 --
 ALTER TABLE `teacher`
-  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `timeschedule`
 --
 ALTER TABLE `timeschedule`
-  MODIFY `timeschedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `timeschedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `university`
 --
 ALTER TABLE `university`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -555,6 +597,7 @@ ALTER TABLE `subject`
 -- Constraints for table `timeschedule`
 --
 ALTER TABLE `timeschedule`
+  ADD CONSTRAINT `FK_subID` FOREIGN KEY (`sub_id`) REFERENCES `teacher` (`teacher_id`),
   ADD CONSTRAINT `timeschedule_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`) ON DELETE CASCADE;
 COMMIT;
 
